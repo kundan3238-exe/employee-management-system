@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/employees",
+  baseURL: "https://employee-management-system-10j2.onrender.com/api/employees",
 });
 
 export const getEmployees = () => API.get("/");
