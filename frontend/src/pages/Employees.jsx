@@ -12,31 +12,18 @@ const Employees = () => {
 
   // Dashboard stats
   const totalEmployees = employees.length;
-const developers = employees.filter(
-  emp => emp.role?.toLowerCase() === "developers"
-).length;
-
-const hr = employees.filter(
-  emp => emp.role?.toLowerCase() === "hr"
-).length;
-
-const managers = employees.filter(
-  emp => emp.role?.toLowerCase() === "managers"
-).length;
-console.log(employees.map(e => e.role));
-
+  const developers = employees.filter(emp => emp.role === "Developer").length;
+  const hr = employees.filter(emp => emp.role === "HR").length;
+  const managers = employees.filter(emp => emp.role === "Manager").length;
 
   const loadEmployees = async () => {
-  try {
-    const res = await getEmployees();
-    setEmployees(res.data);
-
-    console.log(res.data.map(e => e.role)); // 👈 ADD THIS
-  } catch (err) {
-    toast.error("Failed to load employees");
-  }
-};
-
+    try {
+      const res = await getEmployees();
+      setEmployees(res.data);
+    } catch (err) {
+      toast.error("Failed to load employees");
+    }
+  };
 
   useEffect(() => {
     loadEmployees();
@@ -76,35 +63,35 @@ console.log(employees.map(e => e.role));
             Employee Management System
           </h1>
           <p className="text-gray-500 mt-1">
-            HR dashboard to manage employees
+            HR Dashboard to Manage Employees:
           </p>
         </div>
 
         {/* Dashboard Stats */}
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
   <div className="bg-white p-5 rounded-xl shadow">
-    <p className="text-sm text-gray-500">Total Employees</p>
+    <p className="text-sm text-gray-500">Total Employees:</p>
     <h3 className="text-3xl font-bold text-gray-800">
       {totalEmployees}
     </h3>
   </div>
 
   <div className="bg-blue-50 p-5 rounded-xl shadow">
-    <p className="text-sm text-blue-600">Developers</p>
+    <p className="text-sm text-blue-600">Developers :</p>
     <h3 className="text-3xl font-bold text-blue-700">
       {developers}
     </h3>
   </div>
 
   <div className="bg-green-50 p-5 rounded-xl shadow">
-    <p className="text-sm text-green-600">HR</p>
+    <p className="text-sm text-green-600">HR :</p>
     <h3 className="text-3xl font-bold text-green-700">
       {hr}
     </h3>
   </div>
 
   <div className="bg-purple-50 p-5 rounded-xl shadow">
-    <p className="text-sm text-purple-600">Managers</p>
+    <p className="text-sm text-purple-600">Managers :</p>
     <h3 className="text-3xl font-bold text-purple-700">
       {managers}
     </h3>
@@ -140,21 +127,46 @@ console.log(employees.map(e => e.role));
           </select>
         </div>
 
-        {/* Employees */}
-        {filteredEmployees.length === 0 ? (
-          <p className="text-gray-500">No employees found.</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredEmployees.map((emp) => (
-              <EmployeeCard
-                key={emp._id}
-                emp={emp}
-                onEdit={setEditing}
-                onDelete={handleDelete}
-              />
-            ))}
-          </div>
-        )}
+{/* Employees Section */}
+<div className="mt-10">
+  <div className="flex items-center justify-between mb-3">
+    <h2 className="text-2xl font-semibold text-gray-800">
+      Employee Details:
+    </h2>
+
+    <span className="bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full">
+      {filteredEmployees.length} Employees
+    </span>
+  </div>
+
+  <div className="h-px bg-gray-300 mb-6"></div>
+
+  {filteredEmployees.length === 0 ? (
+    <div className="bg-white rounded-xl border p-12 text-center text-gray-500">
+  <div className="text-6xl mb-4">👥</div>
+  <h3 className="text-lg font-semibold text-gray-700">
+    No Employees Found
+  </h3>
+  <p className="text-sm mt-1">
+    Try adding a new employee or adjust your search/filter
+  </p>
+</div>
+
+  ) : (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fadeIn">
+      {filteredEmployees.map((emp) => (
+        <EmployeeCard
+          key={emp._id}
+          emp={emp}
+          onEdit={setEditing}
+          onDelete={handleDelete}
+        />
+      ))}
+    </div>
+  )}
+</div>
+
+
       </div>
     </div>
   );
