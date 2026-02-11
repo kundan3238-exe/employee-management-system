@@ -12,18 +12,31 @@ const Employees = () => {
 
   // Dashboard stats
   const totalEmployees = employees.length;
-  const developers = employees.filter(emp => emp.role === "Developer").length;
-  const hr = employees.filter(emp => emp.role === "HR").length;
-  const managers = employees.filter(emp => emp.role === "Manager").length;
+const developers = employees.filter(
+  emp => emp.role?.toLowerCase() === "developers"
+).length;
+
+const hr = employees.filter(
+  emp => emp.role?.toLowerCase() === "hr"
+).length;
+
+const managers = employees.filter(
+  emp => emp.role?.toLowerCase() === "managers"
+).length;
+console.log(employees.map(e => e.role));
+
 
   const loadEmployees = async () => {
-    try {
-      const res = await getEmployees();
-      setEmployees(res.data);
-    } catch (err) {
-      toast.error("Failed to load employees");
-    }
-  };
+  try {
+    const res = await getEmployees();
+    setEmployees(res.data);
+
+    console.log(res.data.map(e => e.role)); // 👈 ADD THIS
+  } catch (err) {
+    toast.error("Failed to load employees");
+  }
+};
+
 
   useEffect(() => {
     loadEmployees();
